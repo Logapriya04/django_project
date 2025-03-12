@@ -18,13 +18,14 @@ from .models import CustomUser
 from .yolo_utils import load_yolo_model
 from ultralytics import YOLO
 
-# Get the absolute path to the model file
+# Get the absolute path of the project root directory
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Adjust if needed
-model_path = os.path.join(BASE_DIR, "models", "yolov8n.pt")
+model_path = os.path.join(BASE_DIR, "yolov8n.pt")  # No 'models/' folder
 
-# Ensure the model file exists
+print(f"Loading YOLO model from: {model_path}")
+
 if not os.path.exists(model_path):
-    raise FileNotFoundError(f"Model file not found: {model_path}")
+    raise FileNotFoundError(f"Model file not found at: {model_path}")
 
 # Load YOLO model
 model = YOLO(model_path)
