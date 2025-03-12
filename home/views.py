@@ -16,6 +16,18 @@ from django.contrib.staticfiles import finders
 from playsound import playsound # type: ignore
 from .models import CustomUser
 from .yolo_utils import load_yolo_model
+from ultralytics import YOLO
+
+# Get the absolute path to the model file
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Adjust if needed
+model_path = os.path.join(BASE_DIR, "models", "yolov8n.pt")
+
+# Ensure the model file exists
+if not os.path.exists(model_path):
+    raise FileNotFoundError(f"Model file not found: {model_path}")
+
+# Load YOLO model
+model = YOLO(model_path)
 
 
 # ✅ Home Page
