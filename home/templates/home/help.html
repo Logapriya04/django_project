@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help - Ambulance Detection</title>
+    {% load static %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('{% static "home/help_background.jpg" %}') no-repeat center center/cover;
+            color: white;
+            text-align: center;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 50px;
+            width: 100%;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+        h1 {
+            font-size: 36px;
+            color: #ffcc00;
+        }
+        h2 {
+            font-size: 28px;
+            color: #00c6ff;
+        }
+        p {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+        .btn-back {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: #ff3c00;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+        .btn-back:hover {
+            background: #d63000;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Help & Information</h1>
+    
+    <h2>Registration & Login Requirements</h2>
+    <p>To use the <strong>Ambulance Detection System</strong>, you must first register an account or log in if you already have one.</p>
+    <p>Click the "Register" button and fill in the required details. If you already have an account, simply click "Login".</p>
+
+    <h2>About the Ambulance Detection System</h2>
+    <p>The <strong>Ambulance Detection System</strong> helps in detecting ambulances in real-time and prioritizing emergency vehicles for safety and efficiency.</p>
+
+    <h2>About the Ambulance Service System</h2>
+    <p>The <strong>Ambulance Service System</strong> provides emergency response coordination, ensuring quick dispatch of ambulances to critical locations.</p>
+
+    <a href="{% url 'home:index' %}" class="btn-back">Back</a>
+</div>
+
+</body>
+</html>

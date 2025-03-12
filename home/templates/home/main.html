@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ambulance Detection System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    {% load static %}
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: url('{% static "images/background.jpg" %}') no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            z-index: -1;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            background-color: #007bff;
+            color: white;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+        }
+
+        .nav-links li {
+            margin: 0 15px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .auth-buttons a {
+            text-decoration: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .logout-btn {
+            border: 2px solid white;
+            margin-right: 10px;
+        }
+
+        .help-btn {
+            background-color: #ff5722;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Sections */
+        section {
+            padding: 80px 20px;
+            color: white;
+            text-align: center;
+        }
+
+        .hero {
+            background: url('{% static "home/ambulance.jpg" %}') no-repeat center center/cover;
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cta-btn {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #ffdd40;
+            color: #333;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .feature-list {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #007bff;
+            color: white;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header & Navigation Bar -->
+    <header>
+        <div class="logo">
+            🚑 <span>Ambulance Detection</span>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="{% url 'home:main' %}">Home</a></li>
+                <li><a href="{% url 'home:about' %}">About</a></li>
+                <li><a href="#how-it-works" class="scroll-link">How It Works</a></li>
+                <li><a href="{% url 'home:detection' %}">Detection</a></li>
+                <li><a href=https://www.vanjinathanambulanceservice.com/ target="_blank" class="service-btn">Service</a></li>
+                <li><a href="#contact" class="scroll-link">Contact</a></li>  <!-- Fixed Scroll Link -->
+            </ul>
+        </nav>
+        <div class="auth-buttons">
+            {% if user.is_authenticated %}
+                <span>Welcome, <strong>{{ user.username }}</strong>! </span>
+                <a href="{% url 'home:logout' %}" class="logout-btn">Logout</a>
+            {% endif %}
+            <a href="{% url 'home:help' %}" class="help-btn">Help</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>AI-Powered Ambulance Detection</h1>
+        <p>Enhancing road safety with real-time AI detection.</p>
+        <a href="{% url 'home:detection' %}" class="cta-btn">Start Detection</a>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <h2>Why Choose Our System?</h2>
+        <div class="feature-list">
+            <div class="feature-item">🚑 Real-time Detection</div>
+            <div class="feature-item">🤖 AI & YOLO-Based System</div>
+            <div class="feature-item">🔒 Secure Login & User-Friendly</div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="how-it-works">
+        <h2>How It Works</h2>
+        <ol>
+            <p>1. Register/Login</p>
+            <p>2. Upload or Use Live Camera for Detection</p>
+            <p>3. Get Results Instantly</p>
+            <p>4. Implement Alerts for Traffic Management</p>
+        </ol>
+    </section>
+
+    <!-- Live Demo (Optional) -->
+    <section class="live-demo">
+        <h2>Live Demo</h2>
+        <video controls>
+            <source src="{% static 'home/demo.mp4' %}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <h2>What Users Say</h2>
+        <p>🚗 "This system is a game-changer!" - User A</p>
+        <p>🛣️ "Helps emergency vehicles get through faster." - User B</p>
+    </section>
+
+     <!-- Contact Section -->
+     <section id="contact" class="contact"> <!-- Added ID for scrolling -->
+        <h2>Contact Us</h2>
+        <p>Email: support@ambulancedetection.com</p>
+        <p>Phone: +1234567890</p>
+        <p>Follow us: 
+            <a href="#"><i class="fa-brands fa-facebook"></i></a>
+            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+        </p>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Ambulance Detection System. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Smooth Scroll Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll('.scroll-link').forEach(anchor => {
+                anchor.addEventListener('click', function(event) {
+                    const targetId = this.getAttribute('href');
+                    if (targetId.startsWith("#")) {
+                        event.preventDefault();
+                        const targetElement = document.querySelector(targetId);
+                        if (targetElement) {
+                            window.scrollTo({
+                                top: targetElement.offsetTop - 80,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>  

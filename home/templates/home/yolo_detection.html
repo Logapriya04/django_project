@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YOLO Detection</title>
+</head>
+<body>
+    <h1>Ambulance Detection Results</h1>
+    {% if ambulance_detected %}
+        <p style="color: green;">✅ Ambulance Detected!</p>
+        <img src="{{ processed_image }}" alt="Processed Image">
+    {% else %}
+        <p style="color: red;">❌ No Ambulance Detected</p>
+    {% endif %}
+</body>
+</html>

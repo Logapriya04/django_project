@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Ambulance Detection</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background: #f4f4f4; }
+        #upload-section { margin: 20px auto; padding: 20px; background: white; width: 50%; border-radius: 8px; }
+        button { padding: 10px 15px; background: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <div id="upload-section">
+        <h2>Upload an Image for Detection</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Detect</button>
+        </form>
+    </div>
+
+    <h3>OR</h3>
+    
+    <button onclick="startLiveDetection()">Start Live Detection</button>
+
+    <script>
+        function startLiveDetection() {
+            window.open('/live-detection', '_blank');
+        }
+    </script>
+</body>
+</html>

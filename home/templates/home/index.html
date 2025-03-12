@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ambulance Detection</title>
+    {% load static %}
+    <style>
+        body {
+            background: url('{% static "images/background.jpg" %}') no-repeat center center/cover;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            text-align: center;
+            color: white;
+        }
+
+        .title {
+            font-size: 52px;
+            font-weight: bold;
+            background: linear-gradient(90deg, red, blue);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            position: absolute;
+            top: 8px;
+        }
+
+        .quote {
+            font-size: 28px;
+            font-weight: bold;
+            color: black;
+            position: absolute;
+            right: 10%;
+            top: 25%;
+            text-align: right;
+            line-height: 1.5;
+            padding: 10px 20px;
+            border-radius: 10px;
+            white-space: pre-line;
+        }
+
+        .button-container {
+            position: absolute;
+            right: 10%;
+            top: 40%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .btn {
+            display: block;
+            margin: 15px 0;
+            padding: 15px 30px;
+            font-size: 18px;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            text-decoration: none;
+            width: 200px;
+            text-align: center;
+            transition: all 0.3s ease-in-out;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.3);
+            transition: 0.4s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        /* Updated Dashboard Button */
+        .btn-main {
+            background: linear-gradient(90deg, #FFD700, #FFA500);
+            color: white;
+        }
+
+        .btn-register { background: linear-gradient(90deg, #007bff, #00c6ff); }
+        .btn-login { background: linear-gradient(90deg, #28a745, #00ff87); }
+        .btn-help { background: linear-gradient(90deg, #ff8c00, #ff3c00); }
+        .btn-logout { background: linear-gradient(90deg, #ff0000, #ff5757); }
+
+        .btn:hover { transform: scale(1.1); }
+
+        .user-info {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+
+<h1 class="title">Ambulance Detection System</h1>
+
+<p class="quote">Fast, fearless,<br> first to save lives!</p> 
+
+<div class="button-container">
+    {% if user.is_authenticated %}
+       <p>Welcome, <strong>{{ user.username }}</strong>!</p>
+       <a href="{% url 'home:main' %}" class="btn btn-main">Go to Dashboard</a>
+       <a href="{% url 'home:logout' %}" class="btn btn-logout">Logout</a>
+    {% else %}
+       <a href="{% url 'home:register' %}" class="btn btn-register">Register</a>
+       <a href="{% url 'home:login' %}" class="btn btn-login">Login</a>
+    {% endif %}
+    <a href="{% url 'home:help' %}" class="btn btn-help">Help</a>
+</div>
+
+</body>
+</html>
