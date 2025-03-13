@@ -32,13 +32,7 @@ urlpatterns = [
     path("detection/", views.detection_page, name="detection"),
     path("detect-ambulance/", views.detect_ambulance, name="detect_ambulance"),
 
-    # ✅ CCTV Streaming & Uploads
-    path("cctv-stream/", views.cctv_stream, name="cctv_stream"),
-    path('upload-video/', views.upload_video, name='upload_video'),
-    path('upload-image/', views.upload_image, name='upload_image'),  # Fixed name format
-
-    # ✅ YOLO Model API Health Check
-    path("yolo-detection/", views.yolo_detection, name="yolo_detection"),
+    
 ]
 
 # ✅ Serve static and media files in development mode
