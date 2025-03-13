@@ -32,7 +32,8 @@ urlpatterns = [
     path("detection/", views.detection_page, name="detection"),
     path("detect-ambulance/", views.detect_ambulance, name="detect_ambulance"),
 
-    
+    # ✅ CCTV Streaming
+    path("cctv-stream/", views.cctv_stream, name="cctv_stream"),
 ]
 
 # ✅ Serve static and media files in development mode
