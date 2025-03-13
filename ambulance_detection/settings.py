@@ -13,9 +13,7 @@ DEBUG = True
 
 # ✅ Allowed Hosts (Include Render URL)
 ALLOWED_HOSTS = [
-    '127.0.0.1',
-    'localhost',
-    'klp_ambulance_detection_.onrender.com',  # 🔥 Replace with your actual Render URL
+    KLPambulance_detection.repl.co # 🔥 Replace with your actual Render URL
 ]
 
 # ✅ Security Settings (Keep secret key hidden)
