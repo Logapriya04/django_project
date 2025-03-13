@@ -90,31 +90,32 @@ def register(request):
         password2 = request.POST.get('password2', '').strip()
 
         if not all([username, email, password1, password2]):
-            return JsonResponse({"error": "All fields are required."}, status=400)
+            messages.error(request, "❌ All fields are required.")
+            return redirect("home:register")
 
         if password1 != password2:
-            return JsonResponse({"error": "Passwords do not match!"}, status=400)
+            messages.error(request, "❌ Passwords do not match!")
+            return redirect("home:register")
 
         if CustomUser.objects.filter(username=username).exists():
-            return JsonResponse({"error": "Username already exists!"}, status=400)
+            messages.error(request, "❌ Username already exists!")
+            return redirect("home:register")
 
         if CustomUser.objects.filter(email=email).exists():
-            return JsonResponse({"error": "Email is already registered!"}, status=400)
+            messages.error(request, "❌ Email is already registered!")
+            return redirect("home:register")
 
         try:
             user = CustomUser.objects.create_user(username=username, email=email, password=password1)
             user.save()
+            messages.success(request, "✅ Registration successful! Please log in.")
+            return redirect("home:login")
         except Exception as e:
-            return JsonResponse({"error": f"Error creating user: {e}"}, status=500)
+            messages.error(request, f"❌ Error creating user: {e}")
+            return redirect("home:register")
 
-        user = authenticate(request, username=username, password=password1)
-        if user:
-            login(request, user)
-            return JsonResponse({"message": "✅ Registration successful!"})
-        else:
-            return JsonResponse({"error": "Authentication failed. Please log in manually."}, status=400)
-
-    return JsonResponse({"error": "Invalid request method."}, status=400)
+    # Render the registration page if it's a GET request
+    return render(request, "home/register.html")
 
 
 # ✅ Login User
@@ -125,23 +126,27 @@ def user_login(request):
         password = request.POST.get("password", "").strip()
 
         if not username or not password:
-            return JsonResponse({"error": "Username and password are required."}, status=400)
+            messages.error(request, "❌ Username and password are required.")
+            return redirect("home:login")
 
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
-            return JsonResponse({"message": "✅ Login successful!"})
+            messages.success(request, "✅ Login successful!")
+            return redirect("home:main")  # Redirect to main page
         else:
-            return JsonResponse({"error": "❌ Invalid username or password."}, status=400)
+            messages.error(request, "❌ Invalid username or password.")
+            return redirect("home:login")
 
-    return JsonResponse({"error": "Invalid request method."}, status=400)
+    # If GET request, render the login page
+    return render(request, "home/login.html")
 
 
-# ✅ Logout User
-@login_required(login_url='home:login')
+# User Logout
 def user_logout(request):
     logout(request)
-    return JsonResponse({"message": "✅ You have successfully logged out."})
+    messages.success(request, "You have successfully logged out.")
+    return redirect("home:index")  # Redirect to the home page
 
 
 # ✅ Detect Ambulance in Image
@@ -154,18 +159,17 @@ def detect_ambulance(request):
             image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
             results = model(image_rgb)
-            detections = results.pandas().xyxy[0]
+            detections = results[0].boxes.data.cpu().numpy()  # Fixing detection output
             detected = False
 
-            for _, row in detections.iterrows():
-                label = row["name"]
-                confidence = row["confidence"]
+            for box in detections:
+                x1, y1, x2, y2, conf, cls = box
+                label = model.names[int(cls)]
 
-                if label.lower() == "ambulance" and confidence > 0.3:
+                if label.lower() == "ambulance" and conf > 0.3:
                     detected = True
-                    x1, y1, x2, y2 = int(row["xmin"]), int(row["ymin"]), int(row["xmax"]), int(row["ymax"])
-                    cv2.rectangle(image, (x1, y1), (x2, y2), (0, 255, 0), 3)
-                    cv2.putText(image, "Ambulance Detected", (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
+                    cv2.rectangle(image, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 3)
+                    cv2.putText(image, "Ambulance Detected", (int(x1), int(y1) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
 
             output_filename = "detected_output.jpg"
             output_path = os.path.join(settings.MEDIA_ROOT, output_filename)
@@ -199,10 +203,11 @@ def generate_frames():
             image_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             results = model(image_rgb)
 
-            for *xyxy, conf, cls in results.xyxy[0]:
+            for box in results[0].boxes.data.cpu().numpy():
+                x1, y1, x2, y2, conf, cls = box
                 label = model.names[int(cls)]
                 if label == "ambulance":
-                    cv2.rectangle(frame, (int(xyxy[0]), int(xyxy[1])), (int(xyxy[2]), int(xyxy[3])), (0, 255, 0), 2)
+                    cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 2)
                     play_alert_sound()
 
             _, buffer = cv2.imencode('.jpg', frame)
