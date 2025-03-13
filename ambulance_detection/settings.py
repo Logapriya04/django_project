@@ -12,9 +12,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DEBUG = True  
 
 # ✅ Allowed Hosts (Include Render URL)
-ALLOWED_HOSTS = [
-    KLPambulance_detection.repl.co # 🔥 Replace with your actual Render URL
-]
+ALLOWED_HOSTS = ['SKLPambulancedetection.onrender.com', 'localhost']
+
 
 # ✅ Security Settings (Keep secret key hidden)
 SECRET_KEY = os.getenv("SECRET_KEY", "your-default-secret-key")
