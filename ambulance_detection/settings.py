@@ -8,11 +8,15 @@ load_dotenv()
 # Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# ✅ Debug Mode (Make sure it's True for now)
+# ✅ Debug Mode (Set to False in production)
 DEBUG = True  
 
-# ✅ Allowed Hosts (For local development & Render deployment)
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+# ✅ Allowed Hosts (Include Render URL)
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+    'klp_ambulance_detection_.onrender.com',  # 🔥 Replace with your actual Render URL
+]
 
 # ✅ Security Settings (Keep secret key hidden)
 SECRET_KEY = os.getenv("SECRET_KEY", "your-default-secret-key")
@@ -64,13 +68,25 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ambulance_detection.wsgi.application'
 
-# Database (Using SQLite for local development)
+# ✅ Database (Using SQLite for local, PostgreSQL for Render)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# 🔥 Use PostgreSQL on Render (Uncomment & set up if needed)
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.getenv("DATABASE_NAME"),
+#         'USER': os.getenv("DATABASE_USER"),
+#         'PASSWORD': os.getenv("DATABASE_PASSWORD"),
+#         'HOST': os.getenv("DATABASE_HOST"),
+#         'PORT': os.getenv("DATABASE_PORT", "5432"),
+#     }
+# }
 
 # ✅ Authentication settings
 LOGIN_REDIRECT_URL = 'home:main'  # After login, go to main
@@ -83,6 +99,7 @@ CSRF_COOKIE_SECURE = False  # Change to True in production
 CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1",
     "http://localhost",
+    "https://klp_ambulance_detection.onrender.com",  # 🔥 Replace with your actual Render URL
 ]
 
 X_FRAME_OPTIONS = 'DENY'  # Prevent clickjacking attacks
@@ -104,3 +121,6 @@ AMBULANCE_CLASS_ID = 2  # Adjust according to your YOLO class index
 
 # ✅ Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# ✅ Render Port Handling
+PORT = os.getenv("PORT", "8000")
